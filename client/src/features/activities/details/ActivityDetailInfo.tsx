@@ -1,12 +1,16 @@
 import { CalendarToday, Info, Place } from "@mui/icons-material";
-import { Divider, Grid, Paper, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid, Paper, Typography } from "@mui/material";
 import { formatDate } from "../../../lib/utils/util";
+import type { Activity } from "../../../lib/types";
+import { useState } from "react";
+import MapView from "../../../app/shared/components/MapView";
 
 type Props = {
-    activity: Activity
-}
+  activity: Activity;
+};
 
-function ActivityDetailInfo({activity}: Props) {
+function ActivityDetailInfo({ activity }: Props) {
+  const [mapOpen, setMapOpen] = useState(false);
   return (
     <Paper sx={{ mb: 2 }}>
       <Grid container alignItems="center" pl={2} py={1}>
@@ -32,10 +36,30 @@ function ActivityDetailInfo({activity}: Props) {
         <Grid size={1}>
           <Place color="info" fontSize="large" />
         </Grid>
-        <Grid size={11}>
-          <Typography>{activity.venue}, {activity.city}</Typography>
+        <Grid
+          size={11}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography>
+            {activity.venue}, {activity.city}
+          </Typography>
+          <Button onClick={() => setMapOpen(!mapOpen)}>
+            
+              {mapOpen ? "Hide" : "View"}
+            
+          </Button>
         </Grid>
       </Grid>
+      {mapOpen && (
+        <Box sx={{ height: 400, zIndex: 1000, display: "block" }}>
+          <MapView
+            position={[activity.latitude, activity.longitude]}
+            venue={activity.venue}
+          />
+        </Box>
+      )}
     </Paper>
   );
 }

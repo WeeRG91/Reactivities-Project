@@ -84,7 +84,7 @@ function ActivityDetailHeader({ activity }: Props) {
                 variant="contained"
                 color="primary"
                 component={Link}
-                to={`/manage/activityId`}
+                to={`/edit-activity/${activity.id}`}
                 disabled={isCancelled}
               >
                 Manage Event
