@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-
 
 namespace Domain
 {
@@ -12,5 +7,8 @@ namespace Domain
         public string? DisplayName { get; set; }
         public string? Bio { get; set; }
         public string? ImageUrl { get; set; }
+
+        // navigation properties
+        public ICollection<ActivityAttendee> Activities { get; set; } = [];
     }
 }
