@@ -1,5 +1,5 @@
 type Activity = {
-  id?: string;
+  id: string;
   title: string;
   date: Date;
   description: string;
@@ -9,6 +9,18 @@ type Activity = {
   venue: string;
   latitude: number;
   longitude: number;
+  attendees: Profile[];
+  isGoing: boolean;
+  isHost: boolean;
+  hostId: string;
+  hostDisplayName: string;
+};
+
+type Profile = {
+  id: string;
+  displayName: string;
+  bio?: string;
+  imageUrl?: string;
 };
 
 type LocationIQSuggestion = {

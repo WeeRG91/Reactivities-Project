@@ -22,7 +22,7 @@ function ActivityDetailPage() {
         <ActivityDetailChat />
       </Grid>
       <Grid size={3}>
-        <ActivityDetailSidebar />
+        <ActivityDetailSidebar activity={activity} />
       </Grid>
     </Grid>
   );
