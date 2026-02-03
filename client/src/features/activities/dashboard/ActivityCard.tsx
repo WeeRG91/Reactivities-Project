@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 import { Link } from "react-router";
 import { formatDate } from "../../../lib/utils/util";
-import AvatarPopover from "../../../app/shared/components/AvaTarPopover";
+import AvatarPopover from "../../../app/shared/components/AvatarPopover";
+
 
 type Props = {
   activity: Activity;
@@ -30,7 +31,13 @@ function ActivityCard({ activity }: Props) {
     <Card elevation={3} sx={{ borderRadius: 3 }}>
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <CardHeader
-          avatar={<Avatar sx={{ height: 80, width: 80 }} />}
+          avatar={
+            <Avatar
+              src={activity.hostImageUrl}
+              alt={activity.hostDisplayName}
+              sx={{ height: 80, width: 80 }}
+            />
+          }
           title={activity.title}
           subheader={
             <>
@@ -45,7 +52,12 @@ function ActivityCard({ activity }: Props) {
 
         <Box display="flex" flexDirection="column" gap={2} mr={2}>
           {(activity.isHost || activity.isGoing) && (
-            <Chip variant="outlined" label={label} color={color} sx={{ borderRadius: 2 }} />
+            <Chip
+              variant="outlined"
+              label={label}
+              color={color}
+              sx={{ borderRadius: 2 }}
+            />
           )}
           {activity.isCancelled && (
             <Chip label="Cancelled" color="error" sx={{ borderRadius: 2 }} />
@@ -71,7 +83,7 @@ function ActivityCard({ activity }: Props) {
         <Box
           display="flex"
           gap={2}
-          sx={{ backgroundColor: "grey.200", py: 3, pl: 3 }}
+          sx={{ backgroundColor: "grey.200", py: 3, pl: 3, borderRadius:2 }}
         >
           {activity.attendees.map((attendee) => (
             <AvatarPopover profile={attendee} key={attendee.id} />
