@@ -14,7 +14,7 @@ type Activity = {
   isHost: boolean;
   hostId: string;
   hostDisplayName: string;
-  hostImageUrl: string;
+  hostImageUrl?: string;
 };
 
 type Profile = {
@@ -22,6 +22,9 @@ type Profile = {
   displayName: string;
   bio?: string;
   imageUrl?: string;
+  followersCount?: number;
+  followingsCount?: number;
+  following?: boolean;
 };
 
 type Photo = {
@@ -59,7 +62,7 @@ type ChatComment = {
   userId: string;
   displayName: string;
   imageUrl?: string;
-}
+};
 
 type LocationIQAddress = {
   name: string;

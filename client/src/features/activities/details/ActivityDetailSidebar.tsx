@@ -9,14 +9,13 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router";
 
 type Props = {
   activity: Activity;
 };
 
 function ActivityDetailSidebar({ activity }: Props) {
-  const following = true;
-
   return (
     <>
       <Paper
@@ -40,6 +39,8 @@ function ActivityDetailSidebar({ activity }: Props) {
                 <ListItem>
                   <ListItemAvatar>
                     <Avatar
+                      component={Link}
+                      to={`/profiles/${attendee.id}`}
                       variant="rounded"
                       alt={attendee.displayName + " image"}
                       src={attendee.imageUrl}
@@ -48,7 +49,7 @@ function ActivityDetailSidebar({ activity }: Props) {
                   </ListItemAvatar>
                   <ListItemText>
                     <Typography variant="h6">{attendee.displayName}</Typography>
-                    {following && (
+                    {attendee.following && (
                       <Typography variant="body2" color="orange">
                         Following
                       </Typography>

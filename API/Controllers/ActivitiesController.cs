@@ -12,7 +12,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ActivityDto>>> GetActivities()
         {
-            return await Mediator.Send(new GetActivitiyList.Query());
+            return await Mediator.Send(new GetActivityList.Query());
         }
 
         [HttpGet("{id}")]

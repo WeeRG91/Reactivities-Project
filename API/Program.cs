@@ -30,7 +30,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddCors();
 builder.Services.AddSignalR();
 builder.Services.AddMediatR(x => {
-    x.RegisterServicesFromAssemblyContaining<GetActivitiyList.Handler>();
+    x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>();
     x.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
