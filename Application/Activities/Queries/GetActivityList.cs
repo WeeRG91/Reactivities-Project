@@ -1,8 +1,8 @@
 ﻿using Application.Activities.DTOs;
+using Application.Core;
 using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -11,17 +11,59 @@ namespace Application.Activities.Queries
 {
     public class GetActivityList
     {
-        public class Query : IRequest<List<ActivityDto>> {}
+        private const int MaxPageSize = 50;
 
-        public class Handler(AppDbContext dbContext, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Query, List<ActivityDto>>
+        public class Query : IRequest<Result<PagedList<ActivityDto, DateTime?>>> 
         {
-            public async Task<List<ActivityDto>> Handle(Query resquest, CancellationToken cancellationToken)
+            public required ActivityParams Params { get; set; }
+        }
+
+        public class Handler(
+            AppDbContext dbContext, 
+            IMapper mapper, 
+            IUserAccessor userAccessor
+        ) : IRequestHandler<Query, Result<PagedList<ActivityDto, DateTime?>>>
+        {
+            public async Task<Result<PagedList<ActivityDto, DateTime?>>> Handle(Query resquest, CancellationToken cancellationToken)
             {
-                return await dbContext.Activities
-                    .ProjectTo<ActivityDto>(
-                        mapper.ConfigurationProvider, new {currentUserId = userAccessor.GetUserId()}
-                    )
+                var query = dbContext.Activities
+                    .OrderBy(x => x.Date)
+                    .Where(x => x.Date > (resquest.Params.Cursor ?? resquest.Params.StartDate))
+                    .AsQueryable();
+
+                if (!string.IsNullOrEmpty(resquest.Params.Filter))
+                {
+                    query = resquest.Params.Filter switch
+                    {
+                        "isGoing" => query.Where(x => x.Attendees.Any(a => a.UserId == userAccessor.GetUserId())),
+                        "isHost" => query.Where(x => x.Attendees.Any(a => a.IsHost && a.UserId == userAccessor.GetUserId())),
+                        _ => query
+                    };
+                }
+
+                var projectedActivities = query.ProjectTo<ActivityDto>(
+                        mapper.ConfigurationProvider, 
+                        new { currentUserId = userAccessor.GetUserId() }
+                    );
+
+                var activities = await projectedActivities
+                    .Take(resquest.Params.PageSize + 1)
                     .ToListAsync(cancellationToken);
+
+                DateTime? nextCursor = null;
+                if (activities.Count > resquest.Params.PageSize)
+                {
+                    nextCursor = activities.Last().Date;
+                    activities.RemoveAt(activities.Count - 1);
+                }
+
+                return Result<PagedList<ActivityDto, DateTime?>>.Success(
+                        new PagedList<ActivityDto, DateTime?>
+                        {
+                            Items = activities,
+                            NextCursor = nextCursor,
+                        }
+                    );
             }
         }
     }

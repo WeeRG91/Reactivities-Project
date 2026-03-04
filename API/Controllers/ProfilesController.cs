@@ -2,6 +2,7 @@
 using Application.Profiles.DTOs;
 using Application.Profiles.Queries;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -54,6 +55,12 @@ namespace API.Controllers
         public async Task<ActionResult> GetFollowings(string userId, string predicate)
         {
             return HandleResult(await Mediator.Send(new GetFollowings.Query { UserId = userId, Predicate = predicate }));
+        }
+
+        [HttpGet("{userId}/activities")]
+        public async Task<ActionResult> GetUserActivities(string userId, string filter)
+        {
+            return HandleResult(await Mediator.Send(new GetUserActivities.Query { UserId = userId, Filter = filter }));
         }
     }
 }
