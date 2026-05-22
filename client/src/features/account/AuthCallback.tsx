@@ -11,7 +11,6 @@ function AuthCallback() {
   const code = params.get("code");
   const [loading, setLoading] = useState<boolean>(true);
   const fetched = useRef(false);
-  const [response, setResponse] = useState<object | null>(null);
 
   useEffect(() => {
     if (!code || fetched.current) return;
