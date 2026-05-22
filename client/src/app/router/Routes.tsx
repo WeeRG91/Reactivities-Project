@@ -12,6 +12,11 @@ import LoginForm from "../../features/account/LoginForm";
 import RequireAuth from "./RequireAuth";
 import RegisterForm from "../../features/account/RegisterForm";
 import ProfilePage from "../../features/profiles/ProfilePage";
+import VerifyEmail from "../../features/account/VerifyEmail";
+import ChangePasswordForm from "../../features/account/ChangePasswordForm";
+import ForgotPasswordForm from "../../features/account/ForgotPasswordForm";
+import ResetPasswordForm from "../../features/account/ResetPasswordForm";
+import AuthCallback from "../../features/account/AuthCallback";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +30,8 @@ export const router = createBrowserRouter([
           { path: "activities/:id", element: <ActivityDetailPage /> },
           { path: "create-activity", element: <ActivityForm key="create" /> },
           { path: "edit-activity/:id", element: <ActivityForm /> },
-            { path: "profiles/:id", element: <ProfilePage /> },
+          { path: "profiles/:id", element: <ProfilePage /> },
+          { path: "change-password", element: <ChangePasswordForm /> },
         ],
       },
       { path: "", element: <HomePage /> },
@@ -35,6 +41,10 @@ export const router = createBrowserRouter([
       { path: "server-error", element: <ServerError /> },
       { path: "login", element: <LoginForm /> },
       { path: "register", element: <RegisterForm /> },
+      { path: "confirm-email", element: <VerifyEmail /> },
+      { path: "forgot-password", element: <ForgotPasswordForm /> },
+      { path: "reset-password", element: <ResetPasswordForm /> },
+      { path: "auth-callback", element: <AuthCallback /> },
       { path: "*", element: <Navigate replace to="/not-found" /> },
     ],
   },
